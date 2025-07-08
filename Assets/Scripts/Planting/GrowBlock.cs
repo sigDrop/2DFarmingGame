@@ -30,7 +30,7 @@ public class GrowBlock : MonoBehaviour
 
     public void AdvanceStage()
     {
-        currentStage += 1;
+        currentStage++;
 
         if ((int) currentStage >=6)
         {
