@@ -16,7 +16,12 @@ public class GrowBlock : MonoBehaviour
     public GrowthStage currentStage;
 
     public SpriteRenderer spriteRenderer;
-    public Sprite soilTilled;
+    public Sprite soilTilled, soilWatered;
+
+    public SpriteRenderer cropSpriteRenderer;
+    public Sprite cropPlanted, cropGrowing1, cropGrowing2, cropRipe;
+
+    public bool isWatered = false;
 
     void Update()
     {
@@ -26,7 +31,15 @@ public class GrowBlock : MonoBehaviour
 
             SetSoilSprite();
         }*/
+
+#if UNITY_EDITOR
+        if (Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            AdvanceCrop();
+        }
+#endif
     }
+
 
     public void AdvanceStage()
     {
@@ -46,7 +59,14 @@ public class GrowBlock : MonoBehaviour
         }
         else
         {
-            spriteRenderer.sprite = soilTilled;
+            if(isWatered)
+            {
+                spriteRenderer.sprite = soilWatered;
+            }
+            else
+            {
+                spriteRenderer.sprite = soilTilled;
+            }
         }
     }
 
@@ -59,4 +79,72 @@ public class GrowBlock : MonoBehaviour
             SetSoilSprite();
         }
     }
+
+    public void WaterSoil()
+    {
+        isWatered = true;
+
+        SetSoilSprite();
+    }
+
+    public void PlantCrop()
+    {
+        if (currentStage == GrowthStage.ploughed && isWatered)
+        {
+            currentStage = GrowthStage.planted;
+
+            UpdateCropSprite();
+        }
+    }
+
+    void UpdateCropSprite()
+    {
+        switch (currentStage)
+        {
+            case GrowthStage.planted:
+                cropSpriteRenderer.sprite = cropPlanted;
+                break;
+
+            case GrowthStage.growing1:
+                cropSpriteRenderer.sprite = cropGrowing1;
+                break;
+
+            case GrowthStage.growing2:
+                cropSpriteRenderer.sprite = cropGrowing2;
+                break;
+
+            case GrowthStage.ripe:
+                cropSpriteRenderer.sprite = cropRipe;
+                break;
+        }
+    }
+
+    public void AdvanceCrop()
+    {
+        if (isWatered)
+        {
+            if (currentStage == GrowthStage.planted || currentStage == GrowthStage.growing1 || currentStage == GrowthStage.growing2)
+            {
+                currentStage++;
+                
+                isWatered = false;
+
+                SetSoilSprite();
+                UpdateCropSprite();
+            }
+        }
+    }
+
+    public void HarvestCrop()
+    {
+        if (currentStage == GrowthStage.ripe)
+        {
+            currentStage = GrowthStage.ploughed;
+
+            SetSoilSprite();
+
+            cropSpriteRenderer.sprite = null;
+        }
+    }
+        
 }

@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     }
     public ToolType currentTool;
 
+    public float toolWaitTime = 0.5f;
+
+    private float _toolWaitCounter;
+
     void Start()
     {
         UIController.instance.SwitchTool((int)currentTool);
@@ -26,15 +30,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        rigidbody.linearVelocity = moveInput.action.ReadValue<Vector2>().normalized * moveSpeed;
-
-        if (rigidbody.linearVelocity.x < 0f)
+        if (_toolWaitCounter > 0)
         {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            _toolWaitCounter -= Time.deltaTime;
+            rigidbody.linearVelocity = Vector3.zero;
         }
-        else if (rigidbody.linearVelocity.x > 0f)
+        else
         {
-            transform.localScale = Vector3.one;
+            rigidbody.linearVelocity = moveInput.action.ReadValue<Vector2>().normalized * moveSpeed;
+
+            if (rigidbody.linearVelocity.x < 0f)
+            {
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+            else if (rigidbody.linearVelocity.x > 0f)
+            {
+                transform.localScale = Vector3.one;
+            }
         }
 
         bool hasSwitchedTool = false;
@@ -94,24 +106,28 @@ public class PlayerController : MonoBehaviour
 
         //block.PloughSoil();
 
+        _toolWaitCounter = toolWaitTime;
+
         if (block != null)
         {
             switch (currentTool) 
             {
                 case ToolType.plough:
                     block.PloughSoil();
+                    animator.SetTrigger("usePloughing");
                     break;
                 
                 case ToolType.wateringCan:
-
+                    block.WaterSoil();
+                    animator.SetTrigger("useWateringCan");
                     break;
 
                 case ToolType.seeds:
-
+                    block.PlantCrop();
                     break;
 
                 case ToolType.basket:
-
+                    block.HarvestCrop();
                     break;
             }
         }
