@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rigidbody;
     public float moveSpeed;
 
-    public InputActionReference moveInput;
+    public InputActionReference moveInput, actionInput;
 
     public Animator animator;
 
@@ -28,6 +28,20 @@ public class PlayerController : MonoBehaviour
             transform.localScale = Vector3.one;
         }
 
+        if(actionInput.action.WasPressedThisFrame())
+        {
+            UseTool();
+        }
+
         animator.SetFloat("speed", rigidbody.linearVelocity.magnitude);
+    }
+
+    void UseTool()
+    {
+        GrowBlock block = null;
+
+        block = FindFirstObjectByType<GrowBlock>();
+
+        block.PloughSoil();
     }
 }
