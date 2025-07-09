@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class GridController : MonoBehaviour
 {
+    public static GridController instance;
+
     public Transform minPoint, maxPoint;
 
     public GrowBlock baseGridBlock;
@@ -12,6 +15,11 @@ public class GridController : MonoBehaviour
     public List<BlockRow> blockRows = new List<BlockRow>();
 
     public LayerMask gridBlockers;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -39,6 +47,7 @@ public class GridController : MonoBehaviour
                 GrowBlock newBlock = Instantiate(baseGridBlock, startPoint + new Vector3(x, y, 0f), Quaternion.identity);
                 
                 newBlock.transform.SetParent(transform);
+                newBlock.spriteRenderer.sprite = null;
 
                 blockRows[y].blocks.Add(newBlock);
 
@@ -52,6 +61,26 @@ public class GridController : MonoBehaviour
 
         baseGridBlock.gameObject.SetActive(false);
     }
+
+    public GrowBlock GetBlock(float x, float y)
+    {
+        x = Mathf.RoundToInt(x);
+        y = Mathf.RoundToInt(y);
+
+        x -= minPoint.position.x;
+        y -= minPoint.position.y;
+
+        int intX = Mathf.RoundToInt(x);
+        int intY = Mathf.RoundToInt(y);
+
+        if (intX < _gridSize.x && intY < _gridSize.y)
+        {
+            return blockRows[intY].blocks[intX];
+        }
+
+        return null;
+    }
+
 }
 
 [System.Serializable]

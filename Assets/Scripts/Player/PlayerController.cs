@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
 
     private float _toolWaitCounter;
 
+    public Transform toolIndicator;
+    public float toolRange = 3f;
+
     void Start()
     {
         UIController.instance.SwitchTool((int)currentTool);
@@ -96,15 +99,31 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetFloat("speed", rigidbody.linearVelocity.magnitude);
+
+        toolIndicator.position = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+        toolIndicator.position = new Vector3(toolIndicator.position.x, toolIndicator.position.y, 0f);
+
+        if (Vector3.Distance(toolIndicator.position, transform.position) > toolRange)
+        {
+            Vector2 direction = toolIndicator.position - transform.position;
+            direction = direction.normalized * toolRange;
+            toolIndicator.position = transform.position + new Vector3(direction.x, direction.y, 0f);
+        }
+
+        toolIndicator.position = new Vector3(Mathf.FloorToInt(toolIndicator.position.x) + .5f,
+            Mathf.FloorToInt(toolIndicator.position.y) + .5f, 0f);
     }
 
     void UseTool()
     {
         GrowBlock block = null;
 
-        block = FindFirstObjectByType<GrowBlock>();
+        //block = FindFirstObjectByType<GrowBlock>();
 
         //block.PloughSoil();
+
+        block = GridController.instance.GetBlock(toolIndicator.position.x - .5f, toolIndicator.position.y - .5f);
 
         _toolWaitCounter = toolWaitTime;
 
