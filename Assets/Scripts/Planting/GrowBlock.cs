@@ -23,6 +23,8 @@ public class GrowBlock : MonoBehaviour
 
     public bool isWatered = false;
 
+    public bool preventUse;
+
     void Update()
     {
         /*if (Keyboard.current.eKey.wasPressedThisFrame)
@@ -72,7 +74,7 @@ public class GrowBlock : MonoBehaviour
 
     public void PloughSoil()
     {
-        if (currentStage == GrowthStage.barren)
+        if (currentStage == GrowthStage.barren && !preventUse)
         {
             currentStage = GrowthStage.ploughed;
 
@@ -82,14 +84,17 @@ public class GrowBlock : MonoBehaviour
 
     public void WaterSoil()
     {
-        isWatered = true;
+        if (!preventUse)
+        {
+            isWatered = true;
 
-        SetSoilSprite();
+            SetSoilSprite();
+        }
     }
 
     public void PlantCrop()
     {
-        if (currentStage == GrowthStage.ploughed && isWatered)
+        if (currentStage == GrowthStage.ploughed && isWatered && !preventUse)
         {
             currentStage = GrowthStage.planted;
 
@@ -121,7 +126,7 @@ public class GrowBlock : MonoBehaviour
 
     public void AdvanceCrop()
     {
-        if (isWatered)
+        if (isWatered && !preventUse)
         {
             if (currentStage == GrowthStage.planted || currentStage == GrowthStage.growing1 || currentStage == GrowthStage.growing2)
             {
@@ -137,7 +142,7 @@ public class GrowBlock : MonoBehaviour
 
     public void HarvestCrop()
     {
-        if (currentStage == GrowthStage.ripe)
+        if (currentStage == GrowthStage.ripe && !preventUse)
         {
             currentStage = GrowthStage.ploughed;
 
