@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     public Rigidbody2D rigidbody;
     public float moveSpeed;
 
@@ -25,6 +27,19 @@ public class PlayerController : MonoBehaviour
 
     public Transform toolIndicator;
     public float toolRange = 3f;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
