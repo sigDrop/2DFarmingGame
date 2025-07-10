@@ -45,9 +45,11 @@ public class GridController : MonoBehaviour
             for (int x = 0; x < _gridSize.x; x++)
             {
                 GrowBlock newBlock = Instantiate(baseGridBlock, startPoint + new Vector3(x, y, 0f), Quaternion.identity);
-                
+
                 newBlock.transform.SetParent(transform);
                 newBlock.spriteRenderer.sprite = null;
+
+                newBlock.SetGridPosition(x, y);
 
                 blockRows[y].blocks.Add(newBlock);
 
@@ -56,7 +58,24 @@ public class GridController : MonoBehaviour
                     newBlock.spriteRenderer.sprite = null;
                     newBlock.preventUse = true;
                 }
+
+                if (GridInfo.instance.isHasGrid == true)
+                {
+                    BlockInfo storedBlock = GridInfo.instance.theGrid[y].blocks[x];
+
+                    newBlock.currentStage = storedBlock.currentStage;
+                    newBlock.isWatered = storedBlock.isWaterd;
+
+                    newBlock.SetSoilSprite();
+                    newBlock.UpdateCropSprite();
+                }
+
             }
+        }
+
+        if (GridInfo.instance.isHasGrid == false)
+        {
+            GridInfo.instance.CreateGrid();
         }
 
         baseGridBlock.gameObject.SetActive(false);
