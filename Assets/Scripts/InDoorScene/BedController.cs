@@ -27,7 +27,10 @@ public class BedController : MonoBehaviour
         {
             if (Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.eKey.wasPressedThisFrame)
             {
-                GridInfo.instance.GrowCrop();
+                if (TimeController.instance != null)
+                {
+                    TimeController.instance.EndDay();
+                }
             }
         }
     }

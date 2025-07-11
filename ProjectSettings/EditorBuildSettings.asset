@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IndoorScene.unity
     guid: 0f00486097b40c544914cbe6044daa22
+  - enabled: 1
+    path: Assets/Scenes/DayEnd.unity
+    guid: 69da84518bb9a30479ef6c82e9d03860
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
