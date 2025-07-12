@@ -50,6 +50,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (UIController.instance != null)
+        {
+            if (UIController.instance.inventoryController != null)
+            {
+                if (UIController.instance.inventoryController.gameObject.activeSelf == true)
+                {
+                    rigidbody.linearVelocity = Vector2.zero;
+                    return;
+                }
+            }
+        }
+
         if (_toolWaitCounter > 0)
         {
             _toolWaitCounter -= Time.deltaTime;
@@ -170,7 +182,7 @@ public class PlayerController : MonoBehaviour
                     {
                         block.PlantCrop(seedCropType);
 
-                        CropController.instance.UseSeed(seedCropType);
+                        //CropController.instance.UseSeed(seedCropType);
                     }
                     break;
 
@@ -179,5 +191,10 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void SwitchSeed(CropController.CropType newSeed)
+    {
+        seedCropType = newSeed;
     }
 }
