@@ -16,6 +16,10 @@ public class UIController : MonoBehaviour
 
     public Image seedImage;
 
+    public ShopController shopController;
+
+    public TMP_Text moneyText;
+
     private void Awake()
     {
         if (instance == null)
@@ -35,6 +39,11 @@ public class UIController : MonoBehaviour
         {
             inventoryController.OpenClose();
         }
+
+        if (Keyboard.current.bKey.wasPressedThisFrame)
+        {
+            shopController.OpenClose();
+        }    
     }
 
     public void SwitchTool(int selected)
@@ -74,5 +83,10 @@ public class UIController : MonoBehaviour
     public void SwitchSeed(CropController.CropType crop)
     {
         seedImage.sprite = CropController.instance.GetCropInfo(crop).seedType;
+    }
+
+    public void UpdateMoney(float currentMoney)
+    {
+        moneyText.text = "$" + currentMoney;
     }
 }

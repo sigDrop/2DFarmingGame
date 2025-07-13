@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         UIController.instance.SwitchTool((int)currentTool);
+
+        UIController.instance.SwitchSeed(seedCropType);
     }
 
     void Update()
@@ -59,6 +61,12 @@ public class PlayerController : MonoBehaviour
                     rigidbody.linearVelocity = Vector2.zero;
                     return;
                 }
+            }
+
+            if (UIController.instance.shopController != null)
+            {
+                rigidbody.linearVelocity = Vector2.zero;
+                return;
             }
         }
 

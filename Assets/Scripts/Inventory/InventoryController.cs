@@ -7,15 +7,18 @@ public class InventoryController : MonoBehaviour
 
     public void OpenClose()
     {
-        if (gameObject.activeSelf == false)
+        if (UIController.instance.shopController.gameObject.activeSelf == false)
         {
-            gameObject.SetActive(true);
+            if (gameObject.activeSelf == false)
+            {
+                gameObject.SetActive(true);
 
-            UpdateDisplay();
-        }
-        else
-        {
-            gameObject.SetActive(false);
+                UpdateDisplay();
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 
