@@ -30,6 +30,8 @@ public class ShopSeedDisplay : MonoBehaviour
             CurrencyController.instance.SpendMoney(info.seedPrice * amount);
 
             UpdateDisplay();
+
+            AudioManager.instance.PlaySFXPitchAdjusted(5);
         }
     }
 }

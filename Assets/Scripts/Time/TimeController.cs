@@ -62,6 +62,8 @@ public class TimeController : MonoBehaviour
         _timeActive = true;
 
         currentTime = dayStart;
+
+        AudioManager.instance.PlaySFX(6);
     }    
 
     public void EndDay()

@@ -15,6 +15,10 @@ public class DayEndController : MonoBehaviour
         {
             dayText.text = "- Day " + TimeController.instance.currentDay + " -";
         }
+
+        AudioManager.instance.PausedMusic();
+
+        AudioManager.instance.PlaySFX(1);
     }
 
     private void Update()
@@ -22,6 +26,8 @@ public class DayEndController : MonoBehaviour
         if (Keyboard.current.anyKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame)
         {
             TimeController.instance.StartDay();
+
+            AudioManager.instance.ResumeMusic();
 
             SceneManager.LoadScene(wakeUpScene);
         }

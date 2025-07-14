@@ -14,6 +14,8 @@ public class ShopActivator : MonoBehaviour
                 if (!UIController.instance.shopController.gameObject.activeSelf)
                 {
                     UIController.instance.shopController.OpenClose();
+
+                    AudioManager.instance.PlaySFX(0);
                 }
             }
         }
