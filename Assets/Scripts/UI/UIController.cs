@@ -25,6 +25,12 @@ public class UIController : MonoBehaviour
 
     public string sceneName;
 
+    public GameObject victoryScreen;
+
+    public float moneyToWin;
+
+    public TMP_Text dayText;
+
     private void Awake()
     {
         if (instance == null)
@@ -100,6 +106,18 @@ public class UIController : MonoBehaviour
     public void UpdateMoney(float currentMoney)
     {
         moneyText.text = "$" + currentMoney;
+
+        if (currentMoney >= moneyToWin)
+        {
+            if (victoryScreen.activeSelf == false)
+            {
+                dayText.text = TimeController.instance.currentDay + " days";
+
+                victoryScreen.SetActive(true);
+
+                Time.timeScale = 0f;
+            }
+        }
     }
 
     public void PauseUnpause()
@@ -127,11 +145,11 @@ public class UIController : MonoBehaviour
         SceneManager.LoadScene(sceneName);
 
         Destroy(gameObject);
-        Destroy(PlayerController.instance);
-        Destroy(GridInfo.instance);
-        Destroy(TimeController.instance);
-        Destroy(CropController.instance);
-        Destroy(CurrencyController.instance);
+        Destroy(PlayerController.instance.gameObject);
+        Destroy(GridInfo.instance.gameObject);
+        Destroy(TimeController.instance.gameObject);
+        Destroy(CropController.instance.gameObject);
+        Destroy(CurrencyController.instance.gameObject);
 
         AudioManager.instance.PlaySFXPitchAdjusted(5);
     }

@@ -29,12 +29,12 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        _currencyTrack = -1;
+        _currencyTrack = 0;
     }
 
     private void Update()
     {
-        if (!_IsPaused)
+        if (_IsPaused == false)
         {
             if (bgMusic[_currencyTrack].isPlaying == false)
             {
