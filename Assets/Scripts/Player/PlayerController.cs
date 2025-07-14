@@ -63,7 +63,13 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if (UIController.instance.shopController != null)
+            if (UIController.instance.shopController != null && UIController.instance.shopController.gameObject.activeSelf == true)
+            {
+                rigidbody.linearVelocity = Vector2.zero;
+                return;
+            }
+
+            if (UIController.instance.pauseScreen != null && UIController.instance.pauseScreen.gameObject.activeSelf == true)
             {
                 rigidbody.linearVelocity = Vector2.zero;
                 return;

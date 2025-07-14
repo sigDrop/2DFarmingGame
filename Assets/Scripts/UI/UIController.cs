@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
@@ -19,6 +20,10 @@ public class UIController : MonoBehaviour
     public ShopController shopController;
 
     public TMP_Text moneyText;
+
+    public GameObject pauseScreen;
+
+    public string sceneName;
 
     private void Awake()
     {
@@ -43,7 +48,12 @@ public class UIController : MonoBehaviour
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
             shopController.OpenClose();
-        }    
+        }
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            PauseUnpause();
+        }
     }
 
     public void SwitchTool(int selected)
@@ -88,5 +98,40 @@ public class UIController : MonoBehaviour
     public void UpdateMoney(float currentMoney)
     {
         moneyText.text = "$" + currentMoney;
+    }
+
+    public void PauseUnpause()
+    {
+        if (pauseScreen.activeSelf == false)
+        {
+            pauseScreen.SetActive(true);
+
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            pauseScreen.SetActive(false);
+
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(sceneName);
+
+        Destroy(gameObject);
+        Destroy(PlayerController.instance);
+        Destroy(GridInfo.instance);
+        Destroy(TimeController.instance);
+        Destroy(CropController.instance);
+        Destroy(CurrencyController.instance);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
